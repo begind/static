@@ -1,13 +1,12 @@
 pipeline {
   agent any
   stages {
-    stage('Build') {
+    stage('Upload to AWS') {
       steps {
-        sh 'echo "hello World"'
-        sh '''
-          echo "Multiline shell steps works too"
-          ls -lah
-         '''
+        withAWS(region: 'us-west-1', credentials:'aws-static') {
+            // upload index.html to static website
+            s3Upload(file:'index.html', bucket:'lucerop-udacity-static-project', path:'/')
+        }        
         }
      }
   }
